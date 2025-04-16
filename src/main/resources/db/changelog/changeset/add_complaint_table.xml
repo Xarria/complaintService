@@ -13,7 +13,7 @@
             <column name="product_id" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="creation_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="creation_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
             <column name="content" type="varchar(255)">

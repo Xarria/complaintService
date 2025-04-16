@@ -11,8 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class Complaint {
@@ -50,16 +49,33 @@ public class Complaint {
     @Column(name = "count", nullable = false)
     int count;
 
+    public static Complaint create(@NotBlank String productId, @NotBlank String content, @NotBlank String reporter,
+                                   @NotBlank String country) {
+        return Complaint.builder()
+                .productId(productId)
+                .content(content)
+                .reporter(reporter)
+                .country(country)
+                .count(1)
+                .creationDate(LocalDateTime.now())
+                .build();
+    }
+
     @Builder
-    public Complaint(String productId, String content, String reporter, String country) {
+    private Complaint(String productId, String content, String reporter, String country, int count, LocalDateTime creationDate) {
         this.productId = productId;
         this.content = content;
         this.reporter = reporter;
         this.country = country;
-        this.count = 1;
+        this.count = count;
+        this.creationDate = creationDate;
     }
 
     public void incrementCount() {
         this.count += 1;
+    }
+
+    public void updateContent(@NotBlank String content) {
+        this.content = content;
     }
 }

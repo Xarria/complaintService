@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
-    Optional<Complaint> getByReporterAndProductId(String reporter, String productId);
+    Optional<Complaint> findByReporterAndProductId(String reporter, String productId);
 }
