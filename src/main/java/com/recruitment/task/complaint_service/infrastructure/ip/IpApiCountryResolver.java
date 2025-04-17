@@ -2,6 +2,7 @@ package com.recruitment.task.complaint_service.infrastructure.ip;
 
 import com.recruitment.task.complaint_service.domain.service.CountryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,10 +13,10 @@ import static org.hibernate.query.sqm.tree.SqmNode.log;
 public class IpApiCountryResolver implements CountryResolver {
 
     private static final String IP_UNDEFINED = "Undefined";
-
-    private static final  String BASE_URL = "https://ipapi.co/";
-
-    private static final String COUNTRY_CODE_URL = "/country/";
+    @Value("${ipapi.base-url}")
+    private String baseUrl;
+    @Value("${ipapi.suffix}")
+    private String urlSuffix;
 
     private final RestTemplate restTemplate;
 
@@ -27,7 +28,7 @@ public class IpApiCountryResolver implements CountryResolver {
     @Override
     public String getCountryForIP(String ip) {
         try {
-            String url = BASE_URL + ip + COUNTRY_CODE_URL;
+            String url = baseUrl + ip + urlSuffix;
             ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
             if (response.getStatusCode().is2xxSuccessful()) {
                 return response.getBody();

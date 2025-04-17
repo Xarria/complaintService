@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -18,6 +19,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class IpApiCountryResolverTest {
 
+    @Value("${ipapi.base-url}")
+    private String baseUrl;
+    @Value("${ipapi.suffix}")
+    private String urlSuffix;
     @Mock
     private RestTemplate restTemplate;
 
@@ -31,7 +36,7 @@ class IpApiCountryResolverTest {
         String expectedCountry = "PL";
         ResponseEntity<String> response = new ResponseEntity<>(expectedCountry, HttpStatus.OK);
 
-        when(restTemplate.getForEntity("https://ipapi.co/" + ip + "/country/", String.class))
+        when(restTemplate.getForEntity(baseUrl + ip + urlSuffix, String.class))
                 .thenReturn(response);
 
         // when
