@@ -1,6 +1,5 @@
 package com.recruitment.task.complaint_service.application.service;
 
-import com.recruitment.task.complaint_service.util.ComplaintTestDataProvider;
 import com.recruitment.task.complaint_service.api.dto.request.ComplaintCreateRequest;
 import com.recruitment.task.complaint_service.api.dto.response.GetComplaintResponse;
 import com.recruitment.task.complaint_service.api.exception.ComplaintNotFoundException;
@@ -9,6 +8,7 @@ import com.recruitment.task.complaint_service.domain.repository.ComplaintReposit
 import com.recruitment.task.complaint_service.domain.service.CountryResolver;
 import com.recruitment.task.complaint_service.domain.service.IpResolver;
 import com.recruitment.task.complaint_service.infrastructure.mapper.ComplaintMapper;
+import com.recruitment.task.complaint_service.util.ComplaintTestDataProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,8 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -60,7 +59,7 @@ class ComplaintServiceImplTest {
         List<GetComplaintResponse> result = complaintService.getAllComplaints();
 
         // then
-        assertThat(result).containsExactly(dto1, dto2);
+        assertTrue(result.containsAll(List.of(dto1, dto2)));
     }
 
     @Test
@@ -81,7 +80,7 @@ class ComplaintServiceImplTest {
         // then
         verify(complaint).updateContent(newContent);
         verify(complaintRepository).save(complaint);
-        assertThat(result).isEqualTo(response);
+        assertEquals(response, result);
     }
 
     @Test
@@ -91,8 +90,8 @@ class ComplaintServiceImplTest {
         when(complaintRepository.findById(id)).thenReturn(Optional.empty());
 
         // then
-        assertThatThrownBy(() -> complaintService.updateComplaintContent(id, "updated content"))
-                .isInstanceOf(ComplaintNotFoundException.class);
+        assertThrows(ComplaintNotFoundException.class,
+                () -> complaintService.updateComplaintContent(id, "updated content"));
     }
 
     @Test
@@ -113,7 +112,7 @@ class ComplaintServiceImplTest {
         // then
         verify(existingComplaint).incrementCount();
         verify(complaintRepository).save(existingComplaint);
-        assertThat(result).isEqualTo(response);
+        assertEquals(response, result);
     }
 
     @Test
@@ -137,6 +136,6 @@ class ComplaintServiceImplTest {
 
         // then
         verify(complaintRepository).save(any());
-        assertThat(result).isEqualTo(response);
+        assertEquals(response, result);
     }
 }

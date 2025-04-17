@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,7 +30,7 @@ class HttpHeaderIpResolverTest {
         String ip = ipProvider.getIpFromRequest(request);
 
         // then
-        assertThat(ip).isEqualTo("89.64.42.1");
+        assertEquals("89.64.42.1", ip);
     }
 
     @Test
@@ -43,7 +43,7 @@ class HttpHeaderIpResolverTest {
         String ip = ipProvider.getIpFromRequest(request);
 
         // then
-        assertThat(ip).isEqualTo("127.0.0.1");
+        assertEquals("127.0.0.1", ip);
     }
 
     @Test
@@ -56,6 +56,6 @@ class HttpHeaderIpResolverTest {
         String ip = ipProvider.getIpFromRequest(request);
 
         // then
-        assertThat(ip).isEqualTo("127.0.0.1");
+        assertEquals("127.0.0.1", ip);
     }
 }

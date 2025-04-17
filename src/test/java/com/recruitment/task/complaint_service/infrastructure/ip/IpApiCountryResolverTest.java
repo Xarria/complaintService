@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -38,7 +38,7 @@ class IpApiCountryResolverTest {
         String result = countryResolver.getCountryForIP(ip);
 
         // then
-        assertThat(result).isEqualTo("PL");
+        assertEquals("PL", result);
     }
 
     @Test
@@ -54,7 +54,7 @@ class IpApiCountryResolverTest {
         String result = countryResolver.getCountryForIP(ip);
 
         // then
-        assertThat(result).isEqualTo("Undefined");
+        assertEquals("Undefined", result);
     }
 
 }
